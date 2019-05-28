@@ -1,26 +1,55 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './app.css';
+import { Tooltip } from './tooltip';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+class App extends React.Component {
+
+    constructor( props ) {
+
+        super( props );
+
+        this.state = {
+
+            target: null
+        }
+
+        this.containerRef = React.createRef();
+    }
+
+    handleLinkClick( event ) {
+
+        event.preventDefault();
+
+        this.setState( {
+
+            target: event.target
+        } )
+    }
+
+    render() {
+
+        return  <div className="app">
+                    <div className="tooltip-area" ref={ this.containerRef } >
+                        {
+                            new Array(9).fill( undefined ).map( ( link, index ) => 
+
+                                <div key={index} className="link-container">
+                                    <a className="link" 
+                                       href="/" 
+                                       onClick={ this.handleLinkClick.bind(this) }
+                                    >
+                                        Open Tooltip
+                                    </a>
+                                </div>
+                            )
+                        }
+                        <Tooltip target={ this.state.target }
+                                 container={ this.containerRef.current }
+                                 content="This is a tooltip."
+                        />
+                    </div>
+                </div>
+        }
+    }
 
 export default App;
